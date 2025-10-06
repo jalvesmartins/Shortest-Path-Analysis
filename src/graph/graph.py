@@ -1,4 +1,5 @@
 from .edge import Edge
+import heapq
 
 class Graph:
     # Construtor da classe, cria uma lista vazia.
@@ -10,7 +11,7 @@ class Graph:
         if vertex_id not in self.adjacency_list:
             self.adjacency_list[vertex_id] = []
 
-    # Adiciona uma aresta ao grafo.
+    # Adiciona uma aresta (u,v) ao grafo.
     def add_edge(self, u, v, weight, edge_id):
         # Cria arestas para as duas direções.
         edge1 = Edge(id=edge_id, to=v, weight=weight)
@@ -33,3 +34,37 @@ class Graph:
         for i in range(1, M+1):
             u, v, weight = map(int, input().split())
             self.add_edge(u, v, weight, i)
+
+    def dijkstra(self, u):
+        # Inicializa os antecessores com -1 e as distâncias com infinito, menos o da origem.
+        distances = {vertex: float('inf') for vertex in self.adjacency_list}
+        distances[u] = 0
+        
+        # Heap começa com a tupla da origem.
+        heap = [(0, u)] # (distância, id do vértice)
+        
+        # Vértices visitados, começa vazio.
+        visited = set()
+
+        while heap:
+            # Remove o vértice com a menor distância.
+            distance, vertex = heapq.heappop(heap)
+
+            if vertex in visited:
+                continue
+        
+            # Marca como visitado.
+            visited.add(vertex)
+
+            # Relaxa as arestas (processa os vizinhos)
+            for edge in self.adjacency_list[vertex]:
+                if edge.to not in visited:
+                    new_distance = distance + edge.weight
+
+                    # Se encontrou um caminho melhor, atualiza
+                    if new_distance < distances[edge.to]:
+                        distances[edge.to] = new_distance
+                        heapq.heappush(heap, (new_distance, edge.to))
+        
+        # Retorna o dicionário com todas as distâncias. 
+        return distances
