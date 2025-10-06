@@ -27,7 +27,7 @@ class Graph:
         N, M = map(int, input().split())
 
         # Adiciona os N vértices.
-        for i in range(N):
+        for i in range(1, N+1):
             self.add_vertex(i)
 
         # Adiciona as M arestas, com o i sendo o id de cada aresta.
@@ -68,3 +68,35 @@ class Graph:
         
         # Retorna o dicionário com todas as distâncias. 
         return distances
+    
+    # Encontra arestas presentes em pelo menos um caminho mais curto.
+    def find_edges_in_shortest_paths(self, u, v):
+        # Calcula as distâncias mínimas saindo de u e de v.
+        u_distances = self.dijkstra(u)
+        v_distances = self.dijkstra(v)
+
+        # Distância mínima entre u e v.
+        u_and_v_distance = u_distances[v]
+
+        # Cria set para armazenar as arestas presentes em pelo menos 1 caminho mínimo.
+        min_edges = set()
+
+        # Cria set de arestas visitadas (por ID), para otimizar o algoritmo.
+        visited = set()
+
+        for vertex in self.adjacency_list:
+            for edge in self.adjacency_list[vertex]:
+
+                # Verifica se aresta já foi checada.
+                if edge.id in visited:
+                    continue
+                
+                # Marca como visitada.
+                visited.add(edge.id)
+                
+                # Verifica se a aresta está em um caminho mínimo.
+                if u_distances[vertex] + edge.weight + v_distances[edge.to] == u_and_v_distance:
+                    min_edges.add(edge.id)
+        
+        # Retorna set ordenada dos IDs.
+        return sorted(set(min_edges))
