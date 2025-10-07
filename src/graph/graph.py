@@ -126,8 +126,8 @@ class Graph:
         # Retorna set ordenada dos IDs.
         return sorted(set(min_edges))
     
-    # Encontra o número de caminhos mínimos entre u e v.
-    def count_paths(self, u, v):
+    # Encontra o número de caminhos mínimos entre u e outros vértices.
+    def count_paths(self, u):
         # Inicializa os contador com 0.
         path_count = {vertex: 0 for vertex in self.adjacency_list}
 
@@ -136,7 +136,7 @@ class Graph:
 
         # Ordena as distâncias.
         distances = self.dijkstra(u)
-        sorted_vertices = sorted(distances.keys(), key=lambda v: distances[v])
+        sorted_vertices = sorted(distances.keys(), key=lambda vertex: distances[vertex])
 
         for vertex in sorted_vertices:
             for edge in self.adjacency_list[vertex]:
@@ -146,3 +146,52 @@ class Graph:
                     path_count[edge.to] += path_count[vertex]
     
         return path_count
+    
+    # Encontra arestas que caso retiradas do grafo, aumentariam a distância entre os vértices u e v.
+    def find_critical_edges(self, u, v):
+        # Calcula arestas presentes em caminhos mínimos.
+        candidate_edges = self.find_edges_in_shortest_paths(u, v)
+        
+        # Se não há arestas em caminhos mínimos, retorna -1.
+        if not candidate_edges:
+            return [-1]
+        
+        # Calcula distâncias da origem e do destino.
+        u_distances = self.dijkstra(u)
+        v_distances = self.dijkstra(v)
+
+        # Menor caminho entre u e v.
+        shortest_path = u_distances[v]
+
+        # Encontra o número de caminhos mínimos (ida e volta).
+        paths_forward = self.count_paths(u)
+        paths_backward = self.count_paths(v)
+
+        # Total de caminhos mínimos.
+        total_paths = paths_forward[v]
+
+        # Lista de críticos inicialmente vazia.
+        critical = []
+    
+        for edge_id in candidate_edges:
+            # Obtém os vértices da aresta.
+            edge_1, edge_2, weight = self.find_edge(edge_id)
+            
+            if total_paths > 0:
+                # Testa edge_1 -> edge_2 (Como não sabemos em qual ordem esta armazenado).
+                if u_distances[edge_1] + weight + v_distances[edge_2] == shortest_path:
+                    # Verifica se todos os caminhos passam por essa direção
+                    if paths_forward[edge_1] * paths_backward[edge_2] == total_paths:
+                        critical.append(edge_id)
+                
+                # Testa edge_2 -> edge_1.
+                elif u_distances[edge_2] + weight + v_distances[edge_1] == shortest_path:
+                    # Verifica se todos os caminhos passam por essa direção
+                    if paths_forward[edge_2] * paths_backward[edge_1] == total_paths:
+                        critical.append(edge_id)
+
+        # Se nenhuma aresta é crítica, retorna -1.
+        if len(critical) == 0:
+            return [-1]
+
+        return sorted(critical)
