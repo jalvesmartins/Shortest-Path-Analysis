@@ -2,9 +2,10 @@ from .edge import Edge
 import heapq
 
 class Graph:
-    # Construtor da classe, cria uma lista vazia.
+    # Construtor da classe, cria uma lista vazia e um dicionário de arestas para facilitar a busca.
     def __init__(self):
         self.adjacency_list = {}
+        self.edges = {}
 
     # Adiciona um nó ao grafo.
     def add_vertex(self, vertex_id):
@@ -21,6 +22,9 @@ class Graph:
         self.adjacency_list[u].append(edge1)
         self.adjacency_list[v].append(edge2)
 
+        # Adiciona a aresta ao dicionário de arestas.
+        self.edges[edge_id] = (u, v, weight)
+
     # Faz a leitura completa do grafo.
     def read_graph(self):
         # Lê o tamanho do grafo (N vértices e M arestas).
@@ -34,6 +38,9 @@ class Graph:
         for i in range(1, M+1):
             u, v, weight = map(int, input().split())
             self.add_edge(u, v, weight, i)
+
+    def find_edge(self, edge_id):
+        return self.edges[edge_id]
 
     def dijkstra(self, u):
         # Inicializa os antecessores com -1 e as distâncias com infinito, menos o da origem.
