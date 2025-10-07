@@ -39,8 +39,26 @@ class Graph:
             u, v, weight = map(int, input().split())
             self.add_edge(u, v, weight, i)
 
+    # Encontra aresta.
     def find_edge(self, edge_id):
         return self.edges[edge_id]
+    
+    # Remove aresta.
+    def remove_edge(self, edge_id):
+        if edge_id not in self.edges:
+            return
+
+        # Obtém os vértices da aresta.
+        u, v, weight = self.find_edge(edge_id) 
+        
+        # Remove da lista de adjacência de u (Filtra arestas com esse id).
+        self.adjacency_list[u] = [edge for edge in self.adjacency_list[u] if edge.id != edge_id]
+        
+        # Remove da lista de adjacência de v.
+        self.adjacency_list[v] = [edge for edge in self.adjacency_list[v] if edge.id != edge_id]
+        
+        # Remove do dicionário
+        del self.edges[edge_id]
 
     def dijkstra(self, u):
         # Inicializa os antecessores com -1 e as distâncias com infinito, menos o da origem.
