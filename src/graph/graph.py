@@ -125,3 +125,24 @@ class Graph:
         
         # Retorna set ordenada dos IDs.
         return sorted(set(min_edges))
+    
+    # Encontra o número de caminhos mínimos entre u e v.
+    def count_paths(self, u, v):
+        # Inicializa os contador com 0.
+        path_count = {vertex: 0 for vertex in self.adjacency_list}
+
+        # Inicializa o da origem com 1.
+        path_count[u] = 1
+
+        # Ordena as distâncias.
+        distances = self.dijkstra(u)
+        sorted_vertices = sorted(distances.keys(), key=lambda v: distances[v])
+
+        for vertex in sorted_vertices:
+            for edge in self.adjacency_list[vertex]:
+                # Se aresta está em caminho mínimo.
+                if distances[vertex] + edge.weight == distances[edge.to]:
+                    # Adiciona os caminhos de u ao contador do vértice v, sendo que (u -> v).
+                    path_count[edge.to] += path_count[vertex]
+    
+        return path_count
