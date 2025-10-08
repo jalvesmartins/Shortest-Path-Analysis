@@ -119,12 +119,15 @@ class Graph:
                 # Marca como visitada.
                 visited.add(edge.id)
                 
-                # Verifica se a aresta está em um caminho mínimo.
+                # Verifica se a aresta está em um caminho mínimo (direção vertex → edge.to).
                 if u_distances[vertex] + edge.weight + v_distances[edge.to] == u_and_v_distance:
+                    min_edges.add(edge.id)
+                # Verifica também a direção oposta (edge.to → vertex).
+                elif u_distances[edge.to] + edge.weight + v_distances[vertex] == u_and_v_distance:
                     min_edges.add(edge.id)
         
         # Retorna set ordenada dos IDs.
-        return sorted(set(min_edges))
+        return sorted(min_edges)
     
     # Encontra o número de caminhos mínimos entre u e outros vértices.
     def count_paths(self, u):
