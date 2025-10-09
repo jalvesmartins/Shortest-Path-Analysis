@@ -1,11 +1,11 @@
 # TP1 - Algoritmos 1
 ## Análise de Mobilidade Urbana com Grafos
 
-### 📋 Descrição
+### Descrição
 
 Este projeto implementa soluções computacionais para três problemas de mobilidade urbana na cidade fictícia de Somatório, utilizando algoritmos de grafos para análise de rotas e identificação de pontos críticos no trânsito. O objetivo é determinar a melhor forma de implementar áreas verdes com menor impacto no tráfego.
 
-### 🎯 Problemas Resolvidos
+### Problemas Resolvidos
 
 **Problema 1: Distância Mínima**
 - Calcula a menor distância entre a entrada (vértice 1) e a saída (vértice N) da cidade
@@ -19,14 +19,14 @@ Este projeto implementa soluções computacionais para três problemas de mobili
 - A remoção dessas ruas aumentaria necessariamente a distância mínima
 - São pontos críticos do sistema viário
 
-### 🛠️ Tecnologias
+### Tecnologias
 
 - **Linguagem:** Python 3
 - **Estrutura de Dados:** Lista de adjacências
 - **Algoritmos:** Dijkstra, Programação Dinâmica
 - **Bibliotecas:** heapq (fila de prioridades)
 
-### 📁 Estrutura do Projeto
+### Estrutura do Projeto
 
 ```
 tp1/
@@ -47,7 +47,7 @@ tp1/
 └── README.md
 ```
 
-### 🚀 Como Executar
+### Como Executar
 
 #### Opção 1: Usando o arquivo modular
 ```bash
@@ -64,7 +64,7 @@ python vpl/tp1.py
 cat data/large_input/inp_large/in1 | python main.py
 ```
 
-### 📝 Formato de Entrada
+### Formato de Entrada
 
 ```
 N M
@@ -79,7 +79,7 @@ Onde:
 - `M`: número de arestas
 - `ui vi wi`: aresta i conectando vértices ui e vi com peso wi
 
-### 📤 Formato de Saída
+### Formato de Saída
 
 ```
 Parte 1: <distância mínima>
@@ -87,7 +87,7 @@ Parte 2: <lista de IDs das arestas em caminhos mínimos>
 Parte 3: <lista de IDs das arestas críticas ou -1>
 ```
 
-### 💡 Exemplo
+### Exemplo
 
 **Entrada:**
 ```
@@ -108,14 +108,14 @@ Parte 2: 1 2 3
 Parte 3: 1 2 3
 ```
 
-### ⚙️ Complexidade
+### Complexidade
 
 - **Problema 1:** O((V + E) log V)
 - **Problema 2:** O(E log V + E)
 - **Problema 3:** O(E log V + E)
 - **Espaço:** O(V + E) para todos os problemas
 
-### 🧪 Testes
+### Testes
 
 Execute os casos de teste fornecidos:
 
@@ -127,7 +127,7 @@ cat data/large_input/inp_large/in1 | python main.py
 cat data/large_input/out_large/out1
 ```
 
-### 👨‍💻 Info
+### Autor
 
 João Alves Martins
 - Universidade Federal de Minas Gerais (UFMG)
