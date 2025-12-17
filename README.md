@@ -1,134 +1,157 @@
-# TP1 - Algoritmos 1
-## Análise de Mobilidade Urbana com Grafos
+# Shortest Path Analysis - Dijkstra's Algorithm
 
-### Descrição
+## Problem Description
 
-Este projeto implementa soluções computacionais para três problemas de mobilidade urbana na cidade fictícia de Somatório, utilizando algoritmos de grafos para análise de rotas e identificação de pontos críticos no trânsito. O objetivo é determinar a melhor forma de implementar áreas verdes com menor impacto no tráfego.
+This project analyzes shortest paths in weighted graphs using Dijkstra's algorithm. Given a graph with N vertices and M weighted edges, the program solves three main problems:
 
-### Problemas Resolvidos
+1. **Part 1**: Find the shortest distance from vertex 1 to vertex N
+2. **Part 2**: Identify all edges that belong to at least one shortest path from vertex 1 to N
+3. **Part 3**: Identify critical edges - edges whose removal would increase the shortest distance between vertices 1 and N
 
-**Problema 1: Distância Mínima**
-- Calcula a menor distância entre a entrada (vértice 1) e a saída (vértice N) da cidade
+The problem is modeled as follows:
+- Input: N vertices (1 to N) and M weighted edges
+- Output: Three parts showing distance, edges in shortest paths, and critical edges
 
-**Problema 2: Arestas em Caminhos Mínimos**
-- Identifica todas as ruas (arestas) que aparecem em pelo menos um caminho mínimo
-- Essas ruas são candidatas para implementação de áreas verdes
+## Solution Approach
 
-**Problema 3: Arestas Críticas**
-- Identifica ruas que aparecem em TODOS os caminhos mínimos
-- A remoção dessas ruas aumentaria necessariamente a distância mínima
-- São pontos críticos do sistema viário
+The solution implements **Dijkstra's algorithm** to efficiently find shortest paths in weighted graphs. The implementation uses:
 
-### Tecnologias
+- **Min-Heap Priority Queue**: For efficient vertex selection during Dijkstra's execution
+- **Bidirectional Distance Calculation**: Computing distances from both source and destination
+- **Path Counting**: Dynamic programming approach to count the number of shortest paths
+- **Edge Analysis**: Identifying edges that participate in shortest paths and determining criticality
 
-- **Linguagem:** Python 3
-- **Estrutura de Dados:** Lista de adjacências
-- **Algoritmos:** Dijkstra, Programação Dinâmica
-- **Bibliotecas:** heapq (fila de prioridades)
+For detailed information about the algorithm implementation and complexity analysis, refer to the documentation in the `docs/` folder.
 
-### Estrutura do Projeto
+## How to Run
 
-```
-tp1/
-├── src/
-│   └── graph/
-│       ├── __init__.py
-│       ├── edge.py          # Classe Edge
-│       └── graph.py         # Classe Graph com algoritmos
-├── vpl/
-│   └── tp1.py              # Arquivo único para submissão VPL
-├── data/
-│   └── large_input/        # Casos de teste
-│       ├── inp_large/
-│       └── out_large/
-├── docs/
-│   └── instructions.pdf    # Especificação do trabalho
-├── main.py                 # Arquivo principal
-└── README.md
-```
+### Prerequisites
 
-### Como Executar
+- Python 3.6 or higher
+- Standard library only (no external dependencies)
 
-#### Opção 1: Usando o arquivo modular
+### Running the Program
+
+Execute the main program with input from stdin:
+
 ```bash
-python main.py
+python3 main.py < data/input/in1
 ```
 
-#### Opção 2: Usando o arquivo único (VPL)
+Or use any of the available test inputs:
+
 ```bash
-python vpl/tp1.py
+python3 main.py < data/input/in2
+python3 main.py < data/input/in3
 ```
 
-#### Com arquivo de entrada
+Or pipe input directly:
+
 ```bash
-cat data/large_input/inp_large/in1 | python main.py
+echo "4 5
+1 2 1
+2 3 2
+1 3 4
+3 4 1
+2 4 5" | python3 main.py
 ```
 
-### Formato de Entrada
+### Input Format
 
 ```
 N M
-u1 v1 w1
-u2 v2 w2
+U1 V1 W1
+U2 V2 W2
 ...
-uM vM wM
+UM VM WM
 ```
 
-Onde:
-- `N`: número de vértices
-- `M`: número de arestas
-- `ui vi wi`: aresta i conectando vértices ui e vi com peso wi
+Where:
+- N: number of vertices (vertices are numbered from 1 to N)
+- M: number of edges
+- Ui, Vi: vertices connected by edge i (1 ≤ Ui, Vi ≤ N)
+- Wi: weight of edge i (positive integer)
 
-### Formato de Saída
+### Output Format
 
 ```
-Parte 1: <distância mínima>
-Parte 2: <lista de IDs das arestas em caminhos mínimos>
-Parte 3: <lista de IDs das arestas críticas ou -1>
+Parte 1: X
+Parte 2: E1 E2 E3 ... Ek
+Parte 3: C1 C2 C3 ... Cm
 ```
 
-### Exemplo
+Where:
+- **Part 1 (X)**: Shortest distance from vertex 1 to vertex N
+- **Part 2 (E1, E2, ...)**: IDs of edges that belong to at least one shortest path (sorted)
+- **Part 3 (C1, C2, ...)**: IDs of critical edges (sorted), or -1 if no critical edges exist
 
-**Entrada:**
-```
-6 7
-1 2 1
-2 3 1
-3 6 1
-1 4 2
-4 5 2
-5 6 2
-2 5 3
-```
+### Test Cases
 
-**Saída:**
-```
-Parte 1: 3
-Parte 2: 1 2 3
-Parte 3: 1 2 3
-```
-
-### Complexidade
-
-- **Problema 1:** O((V + E) log V)
-- **Problema 2:** O(E log V + E)
-- **Problema 3:** O(E log V + E)
-- **Espaço:** O(V + E) para todos os problemas
-
-### Testes
-
-Execute os casos de teste fornecidos:
+The repository includes test cases in the `data/input/` directory:
 
 ```bash
-# Teste 1
-cat data/large_input/inp_large/in1 | python main.py
-
-# Verificar saída esperada
-cat data/large_input/out_large/out1
+# Run all tests
+for test in data/input/in*; do
+    echo "Testing: $test"
+    python3 main.py < "$test"
+    echo "---"
+done
 ```
 
-### Autor
+## Project Structure
 
-João Alves Martins
-- Universidade Federal de Minas Gerais (UFMG)
-- Disciplina: Algoritmos 1
+```
+.
+├── main.py                 # Main executable file
+├── src/
+│   └── graph/
+│       ├── graph.py        # Graph data structure with adjacency list
+│       ├── edge.py         # Edge class definition
+│       └── __init__.py
+├── data/                   # Test cases
+│   ├── input/
+│   │   ├── in1
+│   │   ├── in2
+│   │   └── in3
+│   └── output/
+│       ├── out1
+│       ├── out2
+│       └── out3
+├── docs/                   # Documentation
+│   └── doc_tp1.pdf
+├── vpl/
+│   └── tp1.py
+└── README.md
+```
+
+## Implementation Details
+
+### Graph Class (`src/graph/graph.py`)
+
+The `Graph` class provides the following key methods:
+
+- **`read_graph()`**: Reads graph input and builds adjacency list representation
+- **`dijkstra(u)`**: Computes shortest distances from vertex u to all other vertices
+- **`find_edges_in_shortest_paths(u, v)`**: Identifies edges in at least one shortest path
+- **`count_paths(u)`**: Counts the number of shortest paths from u to all vertices
+- **`find_critical_edges(u, v)`**: Identifies critical edges between vertices u and v
+
+### Edge Class (`src/graph/edge.py`)
+
+Simple data structure representing a directed edge with:
+- `id`: unique identifier for the edge
+- `to`: destination vertex
+- `weight`: edge weight
+
+### Algorithm Complexity
+
+- **Dijkstra's Algorithm**: O((N + M) log N) using min-heap
+- **Edge Analysis**: O(M) for checking each edge
+- **Path Counting**: O(N + M) using topological order based on distances
+- **Overall Complexity**: O((N + M) log N)
+
+## Author
+
+João Henrique Alves Martins  
+Universidade Federal de Minas Gerais (UFMG)  
+jalvesmartins16@ufmg.br
